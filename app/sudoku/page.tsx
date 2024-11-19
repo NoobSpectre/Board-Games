@@ -90,8 +90,6 @@ export default function SudokuPage() {
         }
       }
 
-      console.log(data.newboard.grids[0].solution);
-
       return data;
     },
     enabled: false,
@@ -122,7 +120,7 @@ export default function SudokuPage() {
   };
 
   const updateBoard = (rowIdx: number, cellIdx: number, newValue: string) => {
-    const newCellValue = Number(newValue);
+    const newCellValue = Number(newValue[newValue.length - 1]);
 
     if (isNaN(newCellValue) || newCellValue === 0) return;
 
@@ -131,7 +129,7 @@ export default function SudokuPage() {
 
     // create a new board and update the respective cell
     const newBoard = board.map(row => [...row]);
-    newBoard[rowIdx][cellIdx].value = Number(newValue[newValue.length - 1]);
+    newBoard[rowIdx][cellIdx].value = newCellValue;
 
     setBoard(newBoard);
   };
@@ -272,7 +270,7 @@ export default function SudokuPage() {
                 {/* board */}
                 <div
                   ref={boardRef}
-                  className="w-full max-w-[30rem] aspect-square  ring-4 ring-secondary grid grid-rows-9 sm:text-2xl"
+                  className="w-full max-w-[30rem] aspect-square ring-4 ring-secondary grid grid-rows-9 xs:text-2xl"
                 >
                   {board.map((row, rowIdx) => (
                     <div key={`row-${rowIdx}`} className="grid grid-cols-9">
@@ -295,8 +293,6 @@ export default function SudokuPage() {
                           onChange={e =>
                             updateBoard(rowIdx, cellIdx, e.target.value)
                           }
-                          data-rowidx={rowIdx}
-                          data-cellidx={cellIdx}
                           onKeyDown={e =>
                             navigateUsingKeys(e.code, rowIdx, cellIdx)
                           }
